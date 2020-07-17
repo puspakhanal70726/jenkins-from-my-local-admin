@@ -1,0 +1,44 @@
+ dnf search openjdk
+  413  yum update
+  414  yum search openjdk
+  415  wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" https://download.oracle.com/otn-pub/java/jdk/12.0.1+12/69cfe15208a647278a19ef0990eea691/jdk-12.0.1_linux-x64_bin.tar.gz
+  416  yum repolist all
+  417  yum-config-manager --enable rhel-7-server-optional-rpms
+  418  yum repolist all
+  419  yum install java-11-openjdk-devel
+  420  sudo sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/epel.repo
+  421  yum install java-11-openjdk-devel
+  422  yum search openjdk
+  423  curl -O https://download.java.net/java/GA/jdk12.0.1/69cfe15208a647278a19ef0990eea691/12/GPL/openjdk-12.0.1_linux-x64_bin.tar.gz
+  424 ls
+  425  sudo mv jdk-12.0.1 /opt/
+  426  cat <<EOF | sudo tee /etc/profile.d/jdk12.sh
+export JAVA_HOME=/opt/jdk-12.0.1
+export PATH=\$PATH:\$JAVA_HOME/bin
+EOF
+
+  427  source /etc/profile.d/jdk12.sh
+  428  echo $JAVA_HOME
+  429  java --version
+  430  yum list-installed
+  431  yum listinstalled
+  432  yum list installed | grep jdk
+  433  yum remove java-1.8.0-openjdk.x86_64
+  434  yum list installed | grep jdk
+  435  yum remove java-1.8.0-openjdk-headless.x86_64
+  436  yum list installed | grep jdk
+
+
+Send-Jenkins-Webhook: https://jenkinsdmsdev.ad.inseego.com/project/01-dev-magenta-retrieve-source
+Trigger-Jenkins-02: https://jenkinsdmsdev.ad.inseego.com/project/02-dev-magenta-build
+
+
+source /etc/profile.d/jdk12.sh
+  516  java
+  517  sudo -Es
+  518  which java
+  519  sudo source /etc/profile.d/jdk12.sh
+  520  source /etc/profile.d/jdk12.sh
+  521  which java
+  522  java -version
+  523  echo $JAVA_HOME

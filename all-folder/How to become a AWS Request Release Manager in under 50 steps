@@ -1,0 +1,150 @@
+
+Obtain AD Credentials
+Create RSA keypair
+Obtain AWS access to govcloud with MFA
+Setup dms keepass (dms.kdbx)
+Install and setup WSL
+Setup WSL environment (nodejs, php, awscli)
+
+
+Obtain AD Credentials
+Have Active Directory (AD) credentials.
+These credentials will be used for the following
+Local computer access
+Local admin permissions
+Jira access
+DMS project.
+Ability to
+Add attachments
+Make comments
+Move from Ready for Release to Final Review
+Jenkins access
+Create RSA keypair
+Use puttygen.exe to create an RSA 4096 bit password protected public/private keypair
+Save the keypairs in your Documents folder or other location you know the path to for later steps.
+Save private key as id_rsa.ppk
+Save public key as a single line formatted file named id_rsa.pub
+Export OpenSSH key (force new file format) to id_rsa
+Obtain AWS access to govcloud with MFA
+Get AWS access with MFA
+This will be used both through the AWS web interface and the AWS cli.
+You may also need to attach the public key created for the previous step to a ticked so it can be applied to the appropriate EC2 instances.
+Setup dms keepass (dms.kdbx)
+Download the empty KeePass database dms_empty.kdbx
+Open the KeePass and save it as dms.kdbx (default Master Key is 12345)
+Change the master key to something more acceptable.
+Modify all the entry's, note there are no real passwords in this sample file, but the Titles are setup.
+Save the KeePass, you will need to copy it to your WSL instance later.
+Install and setup WSL
+Install and setup a Windows Subsystem for Linux (WSL)
+Enable WSL (either of the following methods)
+Control Panel\Programs\Programs and Features\Turn Windows features on or off
+Check box Windows Subsystem for Linux
+Administrator Powershell
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+Go to the windows store and search for ubuntu
+Get ‘Ubuntu 18.04 LTS’
+Launch Ubuntu
+Create a user that matches your AD username.
+Create a user with your firstname
+Login to Ubuntu
+sudo su –
+adduser --force-badname firstname.lastname
+usermod -aG sudo firstname.lastname
+su - firstname.lastname
+exit # new user
+exit # sudo
+exit # Ubuntu bash shell
+open Administrator Powershell
+ubuntu1804 config --default-user firstname.lastname
+Launch Ubuntu and configure it as follows
+Setup SSH keys
+mkdir .ssh
+cd .ssh
+cp /mnt/c/Users/{user.name}/Documents/id_rsa .
+chmod 400 id_rsa
+cd ~
+Setup SSH Agent
+Edit the bash profile.
+
+vi .profile
+Append the following 
+
+SSHAGENT=/usr/bin/ssh-agent
+ 
+SSHAGENTARGS="-s"
+if [ -z "$SSH_AUTH_SOCK" -a -x "$SSHAGENT" ]; then
+eval `$SSHAGENT $SSHAGENTARGS`
+trap "kill $SSH_AGENT_PID" 0
+fi
+ssh-add ~/.ssh/id_rsa
+export PATH=~/.local/bin:$PATH
+export PYTHON=/usr/bin/python
+save and exit
+
+close and reopen Ubuntu
+you should now be prompted for your id_rsa passphrase
+Setup AWS credentials
+create 'credentials' file customized for your aws account
+
+mkdir .aws
+vi .aws/credentials
+Insert the following code: 
+
+[default]
+region=us-gov-west-1
+aws_access_key_id=ASIA...CopyFromAWS
+aws_secret_access_key=tbMZ...CopyFromAWS
+aws_session_token=FQoD...CopyFromAWS
+ 
+[govcloud]
+region=us-gov-west-1
+aws_access_key_id=AKIA...CopyFromAWS
+aws_secret_access_key=DNRZ...CopyFromAWS
+serial_number=arn:aws-us-gov:iam::797897514983:mfa/user.name
+ 
+[govcloudmfa]
+region=us-gov-west-1
+aws_access_key_id=ASIA...CopyFromAWS
+aws_secret_access_key=tbMZz...CopyFromAWS
+aws_session_token=FQoD...CopyFromAWS
+ 
+[cloud]
+region=us-west-2
+aws_access_key_id=AKIA...CopyFromAWS
+aws_secret_access_key=NqOG...CopyFromAWS
+serial_number=arn:aws:iam::928418054704:mfa/user.name
+ 
+[cloudmfa]
+region=us-west-2
+aws_access_key_id=ASIA...CopyFromAWS
+aws_secret_access_key=ON8n...CopyFromAWS
+aws_session_token=FQoG...CopyFromAWS
+Note you only need the credentials in [govcloud] and [cloud] filled out for now
+These are obtained by logging into AWS and going to "My security credentials" and "Create access key"
+Setup dms keepass (dms.kdbx) copy to your linux home folder
+
+The following group and values must be present values are stored in the password field.
+dms
+rds/username
+rds/password
+tmorders/username
+tmorders/password
+sorders/username
+sorders/password
+jira/username
+jira/password
+Copy from windows Documents to WLS: 
+
+cp /mnt/c/Users/{user.name}/Documents/dms.kdbx .
+Setup WSL environment (nodejs, php, awscli)
+Git clone deployment helper scripts 
+
+git clone git@nvtlsdsgitprd.nvtl.local:DMS/deploy.git
+ 
+cd deploy
+./setup.sh
+ 
+ 
+cd release
+./check_install.sh

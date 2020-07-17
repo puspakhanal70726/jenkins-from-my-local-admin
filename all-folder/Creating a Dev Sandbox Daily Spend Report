@@ -1,0 +1,21 @@
+The following instructions are for creating a developer daily spend report which allows a developer with a sandbox account to received daily emails outlining the amount of spend (cost) their sandbox is incurring. This is similar to the Dev Sandbox alerting but where the alerting emails are sent upon reaching a certain percent of the budget, these daily spend reports are sent each day regardless of the spend and outlines the current running total of spend for the developer and their associated sandbox account.
+
+Steps for Creating a Dev Sandbox Daily Spend Report
+The AWS Dev Users budget must already exist or be created. Otherwise, see Creating Dev Sandbox Budgets and Alerts.  
+Access the AWS Billing homepage and the 'Budgets Reports' section.
+https://console.aws.amazon.com/billing/home#/budgets/reports
+Choose 'Create budget report'
+Report Name: Should be in the format "Firstname Lastname Sandbox Daily Budget Report"
+Example: "Steve Wiemholt Sandbox Daily Budget Report"
+Select Budget: Select the one Developer Sandbox budget you need a daily report for.
+Choose 'Configure delivery settings' to continue
+Report frequency: Daily
+Email recipient(s): The corporate email address of the specific developer whose budget you are creating
+Choose 'Confirm budget report' to continue
+Review the settings and choose 'Done' to continue.
+Optional Next Steps
+After having created a Dev Sandbox Daily Spend Report,the following additional tasks may need to be done:
+
+Adding a newly created Dev Sandbox Budget to the master Dev Sandbox Budget
+Other Related Confluence Resources:
+AWS Developer Sandbox Accounts

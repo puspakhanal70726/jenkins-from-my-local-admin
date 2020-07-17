@@ -1,0 +1,67 @@
+The purpose of this procedure is provide a mechanism for Inseego employee's to request and receive read-only access to DMS production Application data.
+
+Requirements:
+Employee's must have management approval
+Employee's must create or provide an SSH Key with length 4096 bits
+SSH will be required
+PuttyGen download (or better yet, get from I.T.)
+Employee's must have software for reading the DB
+MySQL Workbench (Community edition)
+Toad (download)
+Overview of Steps for Requesting Read-Only DB Access
+Employee submits a ticket
+Manager approves
+DevOps provides user with next steps via email and ticket:
+Employee must provide a 4096 key or generate a new SSH key if existing is not long enough
+Employee must run some SQL and provide the results to be used in setting up their password
+Employee replies to DevOps with the results of the next steps
+DevOps runs internal next steps
+Submitting/Committing users gitlab users file and key file
+Running SQL commands in Production (until DR Process is vetted as working)
+DevOps replies to Employee with connection details and requests Employee test connections
+DevOps validates connections with Employee and closes ticket
+Detailed Steps for Requesting Read-Only DB Access
+Employee's submit a DMS Operations ticket which includes the following details. If any of these details are left out, DevOps is to update the ticket requesting the information. 
+First and Last name of employee who will use the access
+SSH String from Public Key (this must be a key with length 4096)
+
+Note: For TM only or SO only, use the appropriate Ops Help Desk. For requesting both, employee should just submit one ticket in the TM Ops Help Desk system.
+Tmorders Operations Tickets (T-Mobile):
+https://jsd.ad.inseego.com/servicedesk/customer/portal/3
+
+Sorders Operations Tickets (Sprint):
+https://jsd.ad.inseego.com/servicedesk/customer/portal/4
+
+Each employee requesting Read-Only should have manager approval. If manager does not directly request, DevOps to validate with employee's manager and note the approval in the ticket. 
+DevOps should update ticket and send an email to the employee asking for the employee to run the following SQL statement (in green below) locally and reply to the ticket with the response. NOTE: Employee must change "mysecretpassword" for a password only they know before replying with the results. Additionally, if the employees key length is not 4096 bit, a request should be made that the employee send or create a new key with the appropriate length. Notes for creating an SSH key are under the heading "Steps for Creating an SSH Key" below.
+
+SELECT PASSWORD('mysecretpassword');
+
+NOTE: Running the above produces a hash value which starts with an *
+Employee should update the ticket they created with the requested information. If they don't, DevOps should remind them it is required. 
+Infrastructure team can then perform the following steps:
+Submitting/Committing gitlab users and key files
+For TM:
+Gitlab via TMORDERS-AWS-security
+Create a blank file named their name (first.last) in TMORDERS-AWS-security → role-user → database
+Create a file named their name (first.last) in TMORDERS-AWS-security → role-user → user-keys with the contents of the file being their SSH key
+For SO:
+Create a blank file named their name (first.last) in SORDERS-AWS-security → role-user → database
+Create a file named their name (first.last) in SORDERS-AWS-security → role-user → user-keys with the contents of the file being their SSH key
+Running SQL commands in Production TM or SO or Both (until DR Process is vetted as working)
+
+CREATE USER 'first.last'@'%';
+SET PASSWORD FOR 'first.last'@'%' = 'UserHash';
+GRANT SELECT, SHOW VIEW ON *.* TO 'first.last'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+DevOps to update ticket with info about successfully adding the needed information as well as writing/sending an email to the employee asking for them to test the connection using the following as connection details:
+Current Connection Instructions to include in the ticket and email to employee.
+
+  T-Moble (tmorders)
+
+SSH:160.1.152.43 (this is the AWS Bastion Server for TM)
+MySQL: 127.187.0.18 (this is the local mapped through to the mysql server)
+Sprint (selectorders)
+SSH:96.127.57.125 on Port 22 (this is the AWS Bastion Server for SO)
+MySQL: 127.0.0.1 on Port 3306 (this is the local mapped through to the mysql server)
+DevOps to confirm success from Employee and work to troubleshoot if there are failures. Once success if confirmed, the employee's ticket should be updated and closed.

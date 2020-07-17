@@ -1,0 +1,46 @@
+Universal Forwarder insatalling in windows.
+
+on the Windows machine while installing Universal forwarder, click on next next next unitl you reach Deployment server you can update the Ip-adderess and the port number, as it is a UI based installation, using this it may hang, then go to task manager, close the installation then again install the forwarder but this time don't put the Ip-address and the port number in it.
+C:drive -- program files -- splunk forwarders -- etc -- system -- local
+
+output.conf check if it is installed or not with the Ip-address and port number.
+
+You have to allow the port number.
+
+
+Universal Forwarder installing on linux
+
+Default ports: 8089 for management and 9997 for indexing
+
+Configure receiving 
+--Forwarding data to splunk indexer or search head won't work unless you configure that indexer or search head to receive data!
+
+Simply go to 
+Settings > Forwarding and Receiving > Add New
+
+Get the IP address or DNS ( Domain Name System) of the required machine.
+
+Install the Universal forwarder in the Linux machine.
+Move the folder into Opt directory.
+
+go to cd opt/splukforwarder/bin 
+then enter the command
+sudo ./splunk enable boot-start --accept-license
+
+sudo ./splunk add forward-server ipaddress:port(192.168.1.1:9997)
+
+check if the added forwarder is attached or not--
+command is 
+sudo ./splunk list forward-server
+
+It will show configured but inactive forwards
+after this we have to add which folder to forward for monitoring purpose, for that command is 
+sudo ./splunk add monitor (folder path which need to monitor) /var/log  (for e.g.)
+
+It will still show the cofigured but inactive forwards when you run the command 
+sudo ./splunk list forward-server
+
+To overcome this you have to restart the forwarder
+sudo ./splunk restart
+
+then it wil work

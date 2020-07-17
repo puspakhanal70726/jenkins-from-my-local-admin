@@ -1,0 +1,21 @@
+Overview
+In order for the automation team to be able to pull down a point-in-time snapshot of the DMS Application and test it against a set of feature tests or otherwise, there is a need to tag the application code with a version number each time new code is pushed to production.
+
+Release Numbers:
+See: DMS Versioning and Release Notes
+
+Policy:
+The current Release Manager for DMS is responsible for tagging the the codebase upon each and every release to production with the appropriate release numbers.If the code repository being pushed to production has changed since the previous release number, the release number must be iterated and a new tag created. See above for location and numbering scheme.
+
+Procedure: 
+To create a tag with the DMS release number upon releasing to production, follow these steps:
+
+Using GitLab
+After the code has been merged into master and pushed to production:
+
+Navigate to Project->Repository→Tags
+Click 'New Tag'
+Tag name should be the release number using the format "vX.Y.X[h]" where X.Y.X[h] is the Release Number according to the scheme with a lower case "v" prepended to the beginning.
+Create From should be 'Master'
+Release Notes can include any or no details for the particular release.
+Submit

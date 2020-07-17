@@ -1,0 +1,94 @@
+Notes
+This document describes how to clone the data on db2 for testing, then restore the original data.
+Please follow the instructions completely. If you receive an error at any point, stop and contact Mike Limon 
+This process takes about 30 minutes. We could cut it to a lot less if we complete CLP-65
+Because db1 saves 21 days worth of logs you must complete testing within 21 days. If you cannot, you will have to abort testing, restore, wait a few hours/days for replication to catch up, then make a new clone for testing.
+
+To make a clone:
+make sure you are on rackspace db2 (not db1, or another hosting facility)
+run the command below, the output should match below: (if it does not, abort)
+
+
+$ hostname
+850160-db2.feeneywireless.com
+Ensure that the server is running "normally." The best way to do this is to check replication status.
+ run the command below, "seconds behind master" should not be blank or NULL. It should probably not be more than 500, and will usually be 0.
+
+$ mysql -uroot -hlocalhost -p$mypass -e"show slave status\G" | grep Seconds
+         Seconds_Behind_Master: 0
+stop the mysql service with the command below, output should match
+
+$ sudo service mysql stop
+Stopping mysql (via systemctl):                            [  OK  ]
+make sure there are no mysqld processes running (aside from the instance in the pmm container started by 'polkitd'), output should match, if it does not, abort
+
+$ sudo ps faux | grep mysql | grep -v polkitd | grep -v pmm | grep -v grep | wc -l
+0
+sudo to root;change to the /data directory
+
+$ sudo su -
+$ cd /data
+backup the current (/data/)mysql directory using the command below 
+
+tar cpf - mysql | pv -s $(du -sb mysql | cut -f1) | lbzip2 > mysql_clp30_$(date +%Y%m%d%H%M%S).clean_replica.bz
+pv provides a handy processbar with an eta (the du... stuff is to get the size of the directory to be backed up)
+lbzip2 is a parallel bzip2 compression, compatible with normal bzip2 if necessary
+date... tags the backup with the current date and time  
+"clean_replica" indicates that this is a replica of db1, with unmodified data. If someone makes backups for any other purpose, they should NOT tag the backup with this keyword.
+when the copy is complete, restart mysql
+
+# service mysql start
+Starting mysql (via systemctl):                            [  OK  ]
+exit your sudo session, enter the mysql monitor for localhost (db2) as root
+
+# exit
+$ mysql -hlocalhost -uroot -p$mypass
+>
+stop replication activity (this is important, if you do not stop replication, UAT will give unpredictable results); make the server writeable; exit the monitor
+
+> stop slave;
+Query OK, 0 rows affected (0.001 sec)
+ 
+> set global read_only = 0;
+Query OK, 0 rows affected (0.000 sec)
+ 
+ 
+>\q
+Bye
+
+
+If the server restarts for any reason, you will have to stop replication and make the server writable again to continue UAT
+
+Do UAT
+When UAT is complete, you will want to restore the server to it's latest stable state. To do this:
+
+make sure you are on rackspace db2 (not db1, or another hosting facility) and stop mysql
+
+
+$ hostname
+850160-db2.feeneywireless.com
+$ sudo service mysql stop
+Stopping mysql (via systemctl):                            [  OK  ]
+sudo to root and navigate to /data
+
+$ sudo su -
+# cd /data
+move the "dirty" mysql directory out of the way
+
+mv mysql mysql_clp30_$(date +%Y%m%d%H%M%S)_dirty
+restore the clean mysql (replace YYYYMMDDHHmmSS) with the timestamp of the backup you created above
+
+pv mysql_clp30_YYYYMMDDHHmmSS.clean_replica.bz | lbzip2 -d | tar -x
+start mysql
+
+# service mysql start
+Starting mysql (via systemctl):                            [  OK  ]
+ensure that  mysql is working 
+
+# mysql -c -uroot -p$mypass -e"show slave status\G" | grep Seconds
+it's not unusual for "Seconds Behind Master" to be 100s of 1000s of seconds behind (or more,) in fact it will be behind as many seconds as the backup was old when the server was restarted. Keep an eye on http://localhost:8081/graph/d/_9zrwMHmk/mysql-replication to make sure that replication delay is generally going down.
+clean up the "dirty" mysql directory; exit sudo session
+
+# rm -rf mysql_clp30_20181231161039_dirty mysql_clp30_20181231151108.clean_replica.bz
+# exit
+You are done!

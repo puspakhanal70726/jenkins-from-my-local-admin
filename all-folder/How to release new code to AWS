@@ -1,0 +1,25 @@
+Run updateawscreds.js (govcloudmfa) (cloudmfa)
+Enter 0 for the cloud mfa if you don't have that account.
+launch ./deploy_aws.php
+Choose the stack you are going to manage.
+Refresh all, this is because we cache the results and display the last results.
+Starting from a "known starting point" of stable production with 1 each of portal, useradmin, and cron servers running.
+Verify the git version is what you intend to deploy.
+Verify that S3 zip and gz files are reporting the same version.
+deploy new version to Portal and Useradmin
+After about 1 minute and before 4 minutes you should be able to detach the new instances from the load balancers.
+After 5 minutes the new instances should be up and reporting the desired instances but show as not attached.
+When you are ready to test swap the portal and user admin instances.
+After about 10 seconds the live urls should be serving the new version of the application, you can check by navigating to version.php.
+sample url https://pgsotest.selectordersgov.com/version.php
+Validate that you want the the instance that is now live.
+Validate that users can log in and have access.
+useradmin.selectorders.com
+usngov.selectorders.com
+Do not accept the instance if you are unsure the site is working correctly.
+If you are keeping the instance, than accept it, otherwise swap back to the old instances.
+Once you have accepted the new version you will be ready to deploy the cron instance.
+** note, be aware of the timing of the cron deployment to not interfere with missing cron cycles. i.e. try not to run around 1 minute after the hour (when hourly crons are scheduled) or at 3:11am when the daily dd40 cron is scheduled.
+Deploy the new version to cron and wait about 30 seconds, you will see a new instance that is coming up but has no version.
+Accept the new instance without a version now, this will terminate the old instance and not cause two instances running conflicting crons at the same time.
+Wait 5 minutes from the time you deployed the cron instance and refresh all to validate all instances are on the correct versions.

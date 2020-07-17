@@ -1,0 +1,15 @@
+Each sandbox account created in AWS will have a predefined budget set for the account. Notifications and alerts will also be setup so that the individual and their manager will receive daily updates detailing the current spend for the individual account as well as the total spend for all Sandbox accounts for the manager. It is up to the individual and manager to monitor the spend for the account and if additional budget is needed, the manager must request an increase to the individuals budget. 
+
+Individual AWS sandbox
+Budgets:
+Current AWS sandbox account budgets are set at $100 per month. The budget is a starting point and can be adjusted up or down according to need. If an individual needs a larger budget, manager approval in the form of a request from their manager is all that is needed.
+
+Reporting on Budgets:
+All sandbox accounts will have reports created and send to the individuals corporate email address once available from Amazon. Currently, according to Amazons policy, the account must first be created and receive it's first bill prior to being eligible for daily reporting on spend and spend threshold. Daily reports can begin being sent to the individual after the first few days of the following month once the account is created. If an account is created on the first of the month, daily reports will not be available until the beginning of the following month.
+
+Combined AWS sandbox budgets
+Budgets:
+The combined AWS sandbox budget is currently set at $500 per month. The combined budget is a starting point and can be adjusted higher or lower as needed.
+
+Reporting on Budgets:
+A report on all sandbox accounts has been created and is being sent daily to the development manager as well as DevOps. Currently an alert is set at 80% of the budget amount and will send an email once the threshold has been reached. Keep in mind that new accounts are not factored into the budget until the new account has compiled at least one bill cycle according to Amazon policy. 

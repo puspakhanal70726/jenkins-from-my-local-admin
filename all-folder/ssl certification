@@ -1,0 +1,25 @@
+keytool -genkey -alias Inseego-01 -dname "cn=Inseego-01,ou=TPA,ou=BMP,ou=Projects,o=Sprint,c=us,s=Oregon,l=eugene" -keyalg RSA -keysize 2048 -sigalg SHA256withRSA -keystore Inseego-01.jks
+
+keytool -certreq -alias Inseego-01 -keystore Inseego-01.jks -file Inseego-01.csr
+
+
+
+keytool -import -trustcacerts -alias root -file "Sprint Nextel Root Authority.cer" -keystore Inseego-01.jks
+
+
+keytool -import -trustcacerts -alias intermediate -file "Sprint Application Issuing 2 Intermediate.cer" -keystore Inseego-01.jks
+
+
+keytool -import -alias sprint-mso -file "sprint-mso.cer" -keystore Inseego-01.jks
+
+keytool -import -alias Inseego-01 -file Inseego-01.cer -keystore Inseego-01.jks
+
+
+
+Bonus:
+How to transform a JKS to PFX (for Windows Cert Store):
+keytool -importkeystore -srcstoretype jks -deststoretype pkcs12 -srckeystore Inseego-01.jks -destkeystore Inseego-01.pfx
+
+
+
+2T0FuBOPasIkWuvfi4XB

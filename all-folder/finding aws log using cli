@@ -1,0 +1,3 @@
+sudo -Es root user
+aws --region us-gov-west-1 logs describe-log-streams --log-group-name tmorders-application --output json
+(logs group: tmorders-application)

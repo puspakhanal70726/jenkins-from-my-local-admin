@@ -1,0 +1,27 @@
+ Create Login Access to an Application for Authorized Users only:
+To: <email2jamesadhikari@gmail.com>
+
+
+Add Login Features:
+Assignee:  khat P Adhikari
+Created:  02/13/2020 
+Priority:  Medium
+Reporter:  Prasanna Ganesa, Release Engineer
+
+Problem Statement:
+We need to allow only Authorize people to access our Application
+
+Features to be implemented:
+       - create a Rest endpoint to validate user
+       - if user not exist then return response to signup
+       - try allowing maximum attempt for login as 3
+       - if it exceed maximum limit of attempt then block that user for 5 minutes
+
+Acceptance Criteria:
+1. Pass User information for login in header with encrypt format
+2. Provide SSO features
+3. User authentication should be done with database
+4. Handle proper exception
+5. Make hour API completely decoupled
+ 
+Add comments any:

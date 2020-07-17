@@ -1,0 +1,31 @@
+In order to create a Dev Sandbox budget, you must have permissions to the AWS Billing Dashboard. Once the permissions are set, follow the instructions below for creating a developer sandbox budget.
+
+Steps for creating a Dev Sandbox Budget
+User must already exist or be created
+Access the AWS Billing homepage and the 'Budgets' section.
+https://console.aws.amazon.com/billing/home?#/budgets
+Choose to 'Create budget'
+Select the budget type 'Cost budget'
+Set your budget
+Name: Should be in the format of 'Firstname Lastname AWS Dev Sandbox Budget'
+Example "Steve Wiemholt AWS Dev Sandbox Budget"
+Period: Monthly
+Budget effective dates: 'Recurring Budget'
+Budget Amount: Fixed
+The dollar amount set is listed on the Budget Policies page (AWS Sandbox Budgets and Alerting)
+Filtering: Choose the drop down and find/select the specific one Developer whose budget you are creating. If they do not appear on the filter list, their account is too new and we will need to wait until after the first billing period to see and select the needed dev. See (AWS Sandbox Budgets and Alerting) for more information. 
+Advanced Options: None needed
+Choose to continue by selecting the 'Configure Alerts' button.
+Steps for configuring Alerts
+Send Alerts based on: 'Actual Costs'
+Alert Threshold: 80 AND '% of budgeted amount'
+Email contacts: The corporate email address of the specific developer whose budget you are creating
+Notify via Amazon Simple Notification Service: Leave unchecked
+Choose to continue by selecting the 'Confirm Budget' button.
+Review the Confirm budget page and once ready, submit by choosing 'Create'
+See Optional Next Steps 
+Optional Next Steps
+After having created a new Developer Sandbox Budget, the following additional tasks may need to be done:
+
+Creating Dev Sandbox Budgets and Alerts
+Adding a newly created Dev Sandbox Budget to the master Dev Sandbox Budget

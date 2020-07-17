@@ -1,0 +1,18 @@
+The following instructions are for adding an existing, likely new, developer sandbox budget to the existing master dev sandbox budget called 'DMS Dev Sandbox Budget'.
+
+Steps for adding a new Dev Sandbox to the master Dev Sandbox Budget
+The individual dev sandbox budget must already exist prior to continuing
+Access the AWS Billing homepage and the 'Budgets' section.
+https://console.aws.amazon.com/billing/home?#/budgets
+Find and click the 'DMS Dev Sandobox Budget'
+Choose to 'Edit Budget'
+Scroll down and locate the 'Filtering' options
+Click 'Linked Account' in the filtering options and check the checkbox next to the new developer account
+Apply filters
+Continue by selecting 'Configure alerts' button
+Verify the alerts are being emailed to:
+The Sr Development manager/engineer
+The Sr DevOps manager/engineer
+Continue by selecting 'confirm budget'
+Review and confirm the budget
+Continue by selecting 'Done'

@@ -1,0 +1,10 @@
+aws sts get-session-token --serial-number arn:aws-us-gov:iam::12345678:mfa/puspa.khanal@inseego.com --token-code 123456
+curl -XPUT -u elastic:changeme 'http://127.0.0.1:9200/_xpack/security/user/elastic/_password?pretty' -H 'Content-Type: application/json' -d'
+{
+  "password": "NewElasticPassword"
+}
+aws sts get-session-token --serial-number arn:aws-us-gov:iam::123456789:mfa/puspa.khaal@inseego.com --token-code 123456
+
+aws sts get-session-token --serial-number arn:aws-us-gov:iam::1233455545:mfa/puspa.khaal@inseego.com --region=us-gov-west-1 --profile puspa --token-code 123456
+
+aws sts get-caller-identity

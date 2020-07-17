@@ -1,0 +1,5 @@
+In a new tab, type or paste about:config in the address bar and press Enter/Return. 
+Click the button promising to be careful or accepting the risk. In the search box above the list, type or paste prelo and pause while the list is filtered
+Double-click the network.stricttransportsecurity.preloadlist preference to switch the value from true to false
+Restart Firefox
+Now you should be able to add the URL as an exception to bypass the certificate warning.

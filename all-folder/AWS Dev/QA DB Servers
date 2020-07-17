@@ -1,0 +1,69 @@
+Overview
+There are currently four RDS Servers for both Dev and QA to use. Development has a TM and SO RDS Server and QA also has a TM and SO Server. In the near future, we may also stand up two Regression RDS Servers (TM and SO) for regression to run uninterrupted on.
+
+Database Endpoints
+Dev	TM	
+dms-tm-dev-rds
+
+dms-tm-dev-rds.clh4ywuaep7k.us-gov-west-1.rds.amazonaws.com
+Dev	SO	
+dms-so-dev-rds
+
+dms-so-dev-rds.clh4ywuaep7k.us-gov-west-1.rds.amazonaws.com
+QA	TM	
+dms-tm-qa-rds
+
+dms-tm-qa-rds.clh4ywuaep7k.us-gov-west-1.rds.amazonaws.com
+QA	SO	
+dms-so-qa-rds
+
+dms-so-qa-rds.clh4ywuaep7k.us-gov-west-1.rds.amazonaws.com
+
+Refresh Strategy
+The databases used by Dev and QA need to be refreshed from Production Data at some interval to keep Development and QA environments up to date and in sync  with Production
+
+When the refresh happens all sql files in the folder 52.222.106.4:/root/scripts/sql/{instance}/*.sql get run against the instance being refreshed.
+
+
+
+Tables Not Refreshed
+Schema	Table	Reasoning
+sorders_sooeprod, dms_so	sis_trans_keys	This table holds encrypted keys used to connect to the SIS service. This is different in Prod vs. Dev so this table should not be refreshed. If it gets refreshed from Production, Development environments will not able to able to connect to the dev/qa sis servers.
+sis_db	All	Credit Card data should not be copied from production to development. As such, these are not refreshed.
+mysql	users	This table will be backed up and restored for the refresh.
+
+
+Refresh Schedule
+NOTE: 4pm PST is 24 UTC on the AWS refresh server
+Dev	TM	MON-FRI 0400 PDT	root@52.222.106.4 crontab 0 11 * * MON-FRI cd /root/scripts && ./nightly_database_process.sh dms-tm-dev-rds	3:00 AM
+Dev	SO	MON-FRI 0400 PDT
+root@52.222.106.4 crontab 0 11 * * MON-FRI cd /root/scripts && ./nightly_database_process.sh dms-so-dev-rds	3:00 AM
+QA	TM	MON 0400 PDT	root@52.222.106.4 crontab 30 2 * * MON-FRI cd /root/scripts && ./nightly_database_process.sh dms-tm-qa-rds	6:30 PM
+QA	SO	MON 0400 PDT
+root@52.222.106.4 crontab 30 2 * * MON-FRI cd /root/scripts && ./nightly_database_process.sh dms-so-qa-rds	6:30 PM
+DB User Creation
+Depending upon your need, new DB users can be added to a single instance or all database instances at once by executing one of two scripts. For users that should also be backed up and restored with the database refreshes, an additional step for 'whitelisting' a database user should also be done. 
+
+Adding a new database user to one instance
+SSH to 52.222.106.4
+
+Execute command after replacing username and password with the appropriate info.
+
+/root/scripts/create_sql_user.sh username password
+Adding a new database user to all instances
+SSH to 52.222.106.4
+
+Execute command after replacing username and password with the appropriate info.
+
+/root/scripts/create_sql_user_on_all.sh username password
+White-listing a database user
+Users must exist (see above) in the database at the time of backup/restore for this process to work. Database users that are white listed will get their accounts (passwords and grants) backed up and restored on refresh.
+
+SSH to 52.222.106.4
+
+Edit (vi) /root/scripts/users/database-users.txt
+
+Add the needed user name to the list in it's alphabetical order
+
+Save the database-users.txt and exit
+

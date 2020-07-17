@@ -1,0 +1,29 @@
+Temporary Option:
+
+Type 'thisisunsafe' while your browser is in focus on the warning page.
+Semi Permanent Option:
+
+Open Chrome
+Go to the dev server URL of your user. Example (https://statelocalgov.YOUR-USER.tmorders.dev)
+Click your F12 keyboard key to open Chromes Dev Tools
+Navigate to Security tab
+View Cert
+
+Navigate to Details Tab, and click the 'copy to file' button
+
+You’re gonna want these settings:
+
+Save to the deepest, darkest, place on your computer (your desktop).
+Now, Go to Chrome Settings (Hint, it’s under  the Menu)
+Scroll to bottom and click Advanced
+On Advanced, search for Manage Certificate
+
+On Manage Certificates, go to the Trusted Root Cert Authorities Tab, and Click Import
+
+Find your certificate (Hint, You hid it in the deepest, darkest, place on your computer [your desktop])
+When you import, you’ll need choose ‘All File Types’ in the drop down:
+
+Accept that awful warning, and then proceed to the highlighted destination.
+Now this next step is VERY important. If you don’t do it correctly, your computer could explode.
+Type into the address bar: chrome://restart
+Now, sit, and wait.

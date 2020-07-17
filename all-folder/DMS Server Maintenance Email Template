@@ -1,0 +1,34 @@
+Infrastructure team to use the following as a template to inform the business team of desired maintenance on a production machine.
+
+
+
+Team,
+
+Maintenance on the <System> is needed for <Reason>.
+
+<Other Reason Statements>
+
+Impact to the requested system is as follows.
+
+Environments: <Impacted System Environments>
+
+<Directly effecting>
+<Indirectly effecting>
+Potential Impact:
+
+Happy Path:
+
+Downtime: <Potential Downtime in Minutes>.
+(optional) Symptoms: <What users may expect>
+Problems Found:
+
+Downtime: <Potential Downtime in Minutes>.
+(optional) Symptoms: <What users may expect>
+Dates/Time:
+
+Date Requested: (range or date) MM/DD/YYYY (<Day of Week>)
+Time: <PST Time> (PST)
+Responsible Parties:
+
+<Main Person Driving>: Performing commands
+(optional) <Backup User>: Watching and responding to escalation issues

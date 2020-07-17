@@ -1,0 +1,17 @@
+Open PuttyGen or other suitable SSH software
+For 'Parameters', select:
+Type of key to Generate: RSA
+Select "Key" from the menu and click "SSH-2 RSA key"
+Number of Bits: 4096 recommended - 2048 min requirement
+Password protected is required
+Once Parameters are selected, choose the "Generate" button and move your mouse around in the key window.
+Once the key has been generated, change your 'Key Comment' to use your firstname.lastname-date (YYYYMMDD)
+Save your Keys
+Keys should be saved on your local machine in a directory that you will remember. Often Documents->keys
+Click Save Public Key
+Save your key as 'firstname.lastname_pub_key_nopass'.
+Click Save Private Key
+Save your key as 'firstname.lastname_pri_key_nopass'.
+Click 'Conversions' on the top navigation. Then choose Export OpenSSH key
+Save your key as 'firstname.lastname_openssh_key_nopass'.
+Provide the key from the top area box in puttygen labeled "Public key for pasting into OpenSSH authorized_keys file:"

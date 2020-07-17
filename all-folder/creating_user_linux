@@ -1,0 +1,6 @@
+username=puspa.khanal
+userkey="ssh-rsa AAAAB3NzaleTQ87Fqd3HZvZgMCVNBxZ3hy3ubgitkB1rfUsx1hr9e6iebIQF0VKIfryUVJJH40v4X6sLyVkwQJesL2nQ== Puspa khanal"
+useradd -G admin $username
+mkdir -p /home/$username/.ssh
+echo $userkey >> /home/$username/.ssh/authorized_keys 
+ 

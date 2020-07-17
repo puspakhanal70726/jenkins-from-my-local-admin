@@ -1,0 +1,9 @@
+The following script should probably be run by Infrastructure but if you're brave, smart, desperate, etc., feel free to give it a shot your self. 
+
+Login to the dev app server or new qa app server (both have the needed files)
+Navigate to: /etc/ssl/selfsigned/
+Sudo edit either the dev_list.txt or qa_list.txt file adding or removing the needed account(s)
+Run (as sudo) the generate_san_cert.sh file by typing: ./generate_san_cert.sh
+Reload or Bounce the apache server by running either
+Reload: sudo service httpd reload
+Bounce: sudo service httpd restart

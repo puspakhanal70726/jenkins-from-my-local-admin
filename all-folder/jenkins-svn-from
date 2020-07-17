@@ -1,0 +1,55 @@
+Project Strings And Images-dev6
+
+
+#!/bin/bash
+
+svn co https://share.sym-care.com/repos/collaboration/collaboration-web/branches/develop/ids/src/web/application/locale/
+
+#WEB Strings
+cd Web_Strings/
+for dir in `ls -1`; do echo $dir;msgfmt $dir/inTouch.po; done > ../outweb.dat
+for dir in `ls -1`; do echo $dir;msgfmt $dir/inTouch.mmol.po; done > ../outweb1.dat
+rm -rf *.mo
+#for dir in `ls -l`; do echo $dir;msgcat ../Custom_Strings/Dynamic_Links/OTR_Links.po $dir/inTouch.po
+for dir in `ls -1`; do echo $dir;cp $dir/inTouch.po ../locale/$dir/LC_MESSAGES/inTouch.po; done
+for dir in `ls -1`; do echo $dir;cp $dir/inTouch.mmol.po ../locale/$dir/LC_MESSAGES/inTouch.mmol.po; done
+
+
+#checking for errors in file before checkin
+if  [ `grep -F "invalid control sequence" ../outweb.err | wc -l` -gt 0 ]
+then
+echo "There are errors in Web Strings"
+exit 1
+else
+cd ../locale/
+svn add *
+svn commit -m "New Files for Webstrings" 
+fi
+#L&P Strings
+cd ../L\&P_Strings/
+for dir in `ls -1`; do echo $dir;msgfmt $dir/legal.po; done > ../outLP.dat
+rm -rf *.mo
+for dir in `ls -1`; do echo $dir;cp $dir/legal.po ../locale/$dir/LC_MESSAGES/legal.po; done
+
+#checking for errors in file before checkin
+if  grep -Fxq "invalid control sequence| sytax error" ../outLP.dat
+then
+echo "There are errors in Legal and Privacy Strings"
+fail
+else
+cd ../locale/
+svn add *
+svn commit -m "New Files for Legal and Privacy Strings"
+fi
+
+#Images
+cd ../
+svn co https://share.sym-care.com/repos/collaboration/collaboration-web/branches/develop/ids/src/web/www/img/comp/helpDialog
+cd Web_Strings/
+for dir in `ls -1`; do echo $dir;cp -rf $dir/helpDialog/* ../helpDialog; done
+for dir in `ls -1`; do echo $dir;cp -rf $dir/helpDialog_*/* ../helpDialog; done
+
+cd ../helpDialog/
+svn add *
+svn commit -m "New Files for Images" 
+
