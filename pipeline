@@ -1,0 +1,26 @@
+pipeline {
+    agent {
+        node 'slave'
+    }
+    tools {
+        maven 'mymaven'
+    }
+    stages {
+        stage('checkout'){
+            steps{
+            git branch: 'master', url: 'https://github.com/puspakhanal70726/springboot-app.git'
+            }
+        }
+        stage('build') {
+            steps {
+               sh 'mvn install'
+            }
+        }
+        // stage('Deploy-to-s3') {
+        //     steps {
+        //       sh 'export AWS_DEFAULT_PROFILE=default; /usr/local/bin/aws s3 cp gs-spring-boot-0.1.0.jar s3://puspa-buckets/'
+        //     }
+        // }
+        
+    }
+}
