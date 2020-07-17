@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+    tools {
+        maven 'mymaven'
+    }
+    stages {
+        stage('checkout') {
+            steps {
+                git branch: 'master', url: 'https://github.com/puspakhanal70726/maven-repo.git'
+            }
+        }
+        stage('build') {
+            steps {
+                sh 'mvn install'
+            }
+        }
+        stage('DeployToS3') {
+            steps {
+               sh 'export PATH=$PATH:/usr/local/bin/aws; export AWS_DEFAULT_PROFILE=puspa; aws s3 cp /Users/Shared/Jenkins/Home/workspace/newpipeline/target/myproject-0.0.1-SNAPSHOT.jar s3://puspa-buckets/'
+            }
+        }
+    }
+}
