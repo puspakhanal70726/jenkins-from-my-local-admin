@@ -1,0 +1,37 @@
+pipeline {
+         agent any
+         stages {
+                 stage('This is first testing') {
+                 steps {
+                     echo 'Hi, this is puspa khanal'
+                 steps {
+                    input('Do you want to proceed')
+                 }
+                 }
+                 }
+                 stage('This is second testing') {
+                 steps {
+                    input('Do you want to proceed?')
+                 }
+                 }
+                 stage('This is thrid testing') {
+                 when {
+                       not {
+                            branch "master"
+                       }
+                 }
+                 steps {
+                       echo "Hello"
+                 }
+                 }
+                 stage('Four') {
+                 parallel { 
+                            stage('Unit Test') {
+                           steps {
+                                echo "Running the unit test..."
+                           }
+                            }
+                           }
+                           }
+              }
+}
