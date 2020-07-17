@@ -1,0 +1,19 @@
+pipleline{
+    agent any
+     tools {
+        maven 'mymaven'
+    }
+    stages{
+        stage('checkout'){
+            steps{
+                git branch 'master' url: 'https://github.com/u2prakash/springboot-app.git'
+            }
+        }
+        stage('Build'){
+            steps{
+                sh 'mvn --version'
+               
+            }
+        }
+    }
+}
